@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beth</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper: #f5f0e8;
+    --paper-dark: #ede7d9;
+    --ink: #1a1a18;
+    --ink-muted: #6b6560;
+    --tape: rgba(180, 210, 190, 0.55);
+    --tape-blue: rgba(160, 185, 220, 0.5);
+    --tape-pink: rgba(220, 175, 175, 0.5);
+  }
+
+  body {
+    background: #1c1c1a;
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 2.5rem 3rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+
+  .site-name {
+    font-family: 'Caveat', cursive;
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  .site-tagline {
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+  }
+
+  nav {
+    position: relative;
+    z-index: 10;
+    padding: 1.5rem 3rem 0;
+    display: flex;
+    gap: 0;
+  }
+
+  nav button {
+    background: none;
+    border: none;
+    font-family: 'Caveat', cursive;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #555;
+    cursor: pointer;
+    padding: 6px 20px 6px 0;
+    position: relative;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  nav button::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 20px;
+    height: 1.5px;
+    background: var(--paper);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  nav button.active { color: var(--paper); }
+  nav button.active::after { transform: scaleX(1); }
+  nav button:hover:not(.active) { color: #999; }
+
+  .board {
+    position: relative;
+    z-index: 5;
+    padding: 2.5rem 2rem 4rem;
+    min-height: calc(100vh - 160px);
+  }
+
+  .tab-content { display: none; animation: fadeIn 0.35s ease; }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .trip-section { margin-bottom: 3rem; }
+
+  .trip-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #555;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding-left: 0.5rem;
+  }
+
+  .polaroid-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: flex-start;
+  }
+
+  .polaroid {
+    background: white;
+    padding: 10px 10px 36px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .polaroid:hover { z-index: 20; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+
+  .polaroid .photo {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .polaroid .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .polaroid .photo.placeholder {
+    background: linear-gradient(135deg, #2a2a28 0%, #3a3830 100%);
+    position: relative;
+  }
+
+  .polaroid .photo.placeholder::after {
+    content: attr(data-icon);
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.15;
+  }
+
+  .polaroid .caption {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: #333;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tape {
+    position: absolute;
+    height: 22px;
+    width: 52px;
+    z-index: 2;
+    border-radius: 1px;
+  }
+  .tape-top { top: -10px; left: 50%; transform: translateX(-50%) rotate(-1deg); }
+  .tape-tl  { top: -9px; left: 12px; transform: rotate(-8deg); }
+  .tape-tr  { top: -9px; right: 12px; transform: rotate(6deg); }
+  .tape-green { background: var(--tape); }
+  .tape-blue  { background: var(--tape-blue); }
+  .tape-pink  { background: var(--tape-pink); }
+
+  .pol-sm { width: 170px; }
+  .pol-md { width: 210px; }
+  .pol-lg { width: 250px; }
+
+  .rot-m3 { transform: rotate(-3deg); }
+  .rot-m2 { transform: rotate(-2deg); }
+  .rot-m1 { transform: rotate(-1.2deg); }
+  .rot-0  { transform: rotate(0deg); }
+  .rot-1  { transform: rotate(1.2deg); }
+  .rot-2  { transform: rotate(2.2deg); }
+  .rot-3  { transform: rotate(3.5deg); }
+
+  .rot-m3:hover { transform: rotate(-3deg) scale(1.06) translateY(-4px); }
+  .rot-m2:hover { transform: rotate(-2deg) scale(1.06) translateY(-4px); }
+  .rot-m1:hover { transform: rotate(-1.2deg) scale(1.06) translateY(-4px); }
+  .rot-0:hover  { transform: rotate(0deg) scale(1.06) translateY(-4px); }
+  .rot-1:hover  { transform: rotate(1.2deg) scale(1.06) translateY(-4px); }
+  .rot-2:hover  { transform: rotate(2.2deg) scale(1.06) translateY(-4px); }
+  .rot-3:hover  { transform: rotate(3.5deg) scale(1.06) translateY(-4px); }
+
+  .mt-0  { margin-top: 0; }
+  .mt-1  { margin-top: 18px; }
+  .mt-2  { margin-top: 36px; }
+  .ml-1  { margin-left: 12px; }
+  .ml-2  { margin-left: 24px; }
+  .ml-3  { margin-left: 40px; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,8,0.92);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .lightbox.open { display: flex; animation: lbIn 0.2s ease; }
+  @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .lightbox-inner {
+    background: white;
+    padding: 12px 12px 48px;
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    cursor: default;
+  }
+
+  .lightbox-inner img { display: block; max-width: 75vw; max-height: 75vh; object-fit: contain; }
+
+  .lightbox-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -32px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+  }
+
+  .upload-hint {
+    font-size: 11px;
+    color: #333;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3rem 0 1rem 0.5rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed #2e2e2c;
+    margin: 1rem 0 2.5rem 0.5rem;
+    width: 120px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-name">Beth</div>
+  <div class="site-tagline">photography</div>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('people', this)">people</button>
+  <button onclick="showTab('travel', this)">travel</button>
+  <button onclick="showTab('switzerland', this)">switzerland</button>
+</nav>
+
+<div class="board">
+
+  <!-- PEOPLE TAB -->
+  <div class="tab-content active" id="tab-people">
+    <div class="trip-section">
+      <div class="trip-label">portraits</div>
+      <div class="polaroid-row">
+        <div class="polaroid pol-md rot-m2 mt-0" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-green"></div>
+          <div class="photo placeholder" data-icon="👤"></div>
+          <div class="caption">morning light</div>
+        </div>
+        <div class="polaroid pol-lg rot-1 mt-1 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-tr tape-blue"></div>
+          <div class="photo placeholder" data-icon="👤"></div>
+          <div class="caption">old town, Prague</div>
+        </div>
+        <div class="polaroid pol-sm rot-m1 mt-2 ml-1" onclick="openLightbox(this)">
+          <div class="tape tape-top tape-pink"></div>
+          <div class="photo placeholder" data-icon="👤"></div>
+          <div class="caption">untitled</div>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="trip-section">
+      <div class="trip-label">candid</div>
+      <div class="polaroid-row">
+        <div class="polaroid pol-sm rot-3 mt-1 ml-3" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-pink"></div>
+          <div class="photo placeholder" data-icon="👤"></div>
+          <div class="caption">market day</div>
+        </div>
+        <div class="polaroid pol-md rot-m3 mt-0 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-top tape-green"></div>
+          <div class="photo placeholder" data-icon="👤"></div>
+          <div class="caption">waiting</div>
+        </div>
+      </div>
+    </div>
+    <div class="upload-hint">→ replace placeholders with your photos — see readme.txt</div>
+  </div>
+
+  <!-- TRAVEL TAB -->
+  <div class="tab-content" id="tab-travel">
+    <div class="trip-section">
+      <div class="trip-label">on the road</div>
+      <div class="polaroid-row">
+        <div class="polaroid pol-lg rot-m1 mt-0" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-blue"></div>
+          <div class="photo placeholder" data-icon="✈️"></div>
+          <div class="caption">somewhere new</div>
+        </div>
+        <div class="polaroid pol-sm rot-2 mt-2 ml-1" onclick="openLightbox(this)">
+          <div class="tape tape-top tape-pink"></div>
+          <div class="photo placeholder" data-icon="✈️"></div>
+          <div class="caption">train window</div>
+        </div>
+        <div class="polaroid pol-md rot-m2 mt-1 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-tr tape-green"></div>
+          <div class="photo placeholder" data-icon="✈️"></div>
+          <div class="caption">golden hour</div>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="trip-section">
+      <div class="trip-label">stopovers</div>
+      <div class="polaroid-row">
+        <div class="polaroid pol-md rot-1 mt-0 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-pink"></div>
+          <div class="photo placeholder" data-icon="✈️"></div>
+          <div class="caption">layover views</div>
+        </div>
+        <div class="polaroid pol-sm rot-m3 mt-1 ml-1" onclick="openLightbox(this)">
+          <div class="tape tape-top tape-blue"></div>
+          <div class="photo placeholder" data-icon="✈️"></div>
+          <div class="caption">departure gate</div>
+        </div>
+      </div>
+    </div>
+    <div class="upload-hint">→ replace placeholders with your photos — see readme.txt</div>
+  </div>
+
+  <!-- SWITZERLAND TAB -->
+  <div class="tab-content" id="tab-switzerland">
+    <div class="trip-section">
+      <div class="trip-label">alps</div>
+      <div class="polaroid-row">
+        <div class="polaroid pol-lg rot-m1 mt-0" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-blue"></div>
+          <div class="photo placeholder" data-icon="🏔️"></div>
+          <div class="caption">first snow</div>
+        </div>
+        <div class="polaroid pol-md rot-2 mt-2 ml-1" onclick="openLightbox(this)">
+          <div class="tape tape-top tape-green"></div>
+          <div class="photo placeholder" data-icon="🏔️"></div>
+          <div class="caption">Lauterbrunnen</div>
+        </div>
+        <div class="polaroid pol-sm rot-m2 mt-0 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-tr tape-pink"></div>
+          <div class="photo placeholder" data-icon="🏔️"></div>
+          <div class="caption">cable car up</div>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="trip-section">
+      <div class="trip-label">cities & villages</div>
+      <div class="polaroid-row">
+        <div class="polaroid pol-sm rot-3 mt-1 ml-3" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-green"></div>
+          <div class="photo placeholder" data-icon="🇨🇭"></div>
+          <div class="caption">Zürich at dusk</div>
+        </div>
+        <div class="polaroid pol-lg rot-m2 mt-0 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-top tape-blue"></div>
+          <div class="photo placeholder" data-icon="🇨🇭"></div>
+          <div class="caption">lake reflect.</div>
+        </div>
+        <div class="polaroid pol-md rot-1 mt-2 ml-1" onclick="openLightbox(this)">
+          <div class="tape tape-tr tape-pink"></div>
+          <div class="photo placeholder" data-icon="🇨🇭"></div>
+          <div class="caption">old town</div>
+        </div>
+      </div>
+    </div>
+    <div class="upload-hint">→ replace placeholders with your photos — see readme.txt</div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-inner" id="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">close ×</button>
+    <div id="lightbox-content"></div>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function openLightbox(card) {
+  const photo = card.querySelector('.photo');
+  const caption = card.querySelector('.caption').textContent;
+  const content = document.getElementById('lightbox-content');
+  const img = photo.querySelector('img');
+  if (img) {
+    content.innerHTML = '<img src="' + img.src + '" alt="' + caption + '">';
+  } else {
+    content.innerHTML = '<div style="width:480px;max-width:75vw;height:360px;max-height:60vh;background:linear-gradient(135deg,#2a2a28,#3a3830);display:flex;align-items:center;justify-content:center;font-size:5rem;opacity:0.3;">' + (photo.getAttribute('data-icon') || '') + '</div>';
+  }
+  document.getElementById('lightbox-caption').textContent = caption;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('open');
+});
+</script>
+
+</body>
+</html>
