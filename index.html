@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Beth</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,10 +12,9 @@
     --paper: #f5f0e8;
     --paper-dark: #ede7d9;
     --ink: #1a1a18;
-    --ink-muted: #6b6560;
-    --tape: rgba(180, 210, 190, 0.55);
-    --tape-blue: rgba(160, 185, 220, 0.5);
-    --tape-pink: rgba(220, 175, 175, 0.5);
+    --tape:      rgba(180, 210, 190, 0.55);
+    --tape-blue: rgba(160, 185, 220, 0.50);
+    --tape-pink: rgba(220, 175, 175, 0.50);
   }
 
   body {
@@ -32,30 +31,31 @@
     padding: 2.5rem 3rem 0;
     display: flex;
     align-items: baseline;
-    gap: 1.5rem;
+    gap: 1.4rem;
   }
 
   .site-name {
-    font-family: 'Caveat', cursive;
-    font-size: 2.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
     font-weight: 600;
     color: var(--paper);
-    letter-spacing: -0.01em;
+    letter-spacing: 0.04em;
     line-height: 1;
   }
 
   .site-tagline {
-    font-size: 11px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
     color: #555;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.06em;
     padding-bottom: 4px;
   }
 
   nav {
     position: relative;
     z-index: 10;
-    padding: 1.5rem 3rem 0;
+    padding: 1.4rem 3rem 0;
     display: flex;
     gap: 0;
   }
@@ -63,15 +63,15 @@
   nav button {
     background: none;
     border: none;
-    font-family: 'Caveat', cursive;
-    font-size: 1.25rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
     font-weight: 400;
+    letter-spacing: 0.08em;
     color: #555;
     cursor: pointer;
-    padding: 6px 20px 6px 0;
+    padding: 6px 22px 6px 0;
     position: relative;
     transition: color 0.2s;
-    letter-spacing: 0.02em;
   }
 
   nav button::after {
@@ -79,8 +79,8 @@
     position: absolute;
     bottom: 2px;
     left: 0;
-    right: 20px;
-    height: 1.5px;
+    right: 22px;
+    height: 1px;
     background: var(--paper);
     transform: scaleX(0);
     transform-origin: left;
@@ -106,15 +106,16 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .trip-section { margin-bottom: 3rem; }
+  .trip-section { margin-bottom: 3.5rem; }
 
   .trip-label {
-    font-family: 'Caveat', cursive;
-    font-size: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
     color: #555;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1.2rem;
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
+    margin-bottom: 1.4rem;
     padding-left: 0.5rem;
   }
 
@@ -125,20 +126,22 @@
     align-items: flex-start;
   }
 
+  /* Polaroid — horizontal 5:3 photo area */
   .polaroid {
     background: white;
-    padding: 10px 10px 36px;
+    padding: 9px 9px 40px;
     position: relative;
     cursor: pointer;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     flex-shrink: 0;
   }
 
-  .polaroid:hover { z-index: 20; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+  .polaroid:hover { z-index: 20; box-shadow: 0 14px 44px rgba(0,0,0,0.65); }
 
   .polaroid .photo {
     width: 100%;
-    aspect-ratio: 1;
+    /* 5:3 ratio */
+    aspect-ratio: 5 / 3;
     overflow: hidden;
     background: var(--paper-dark);
     display: flex;
@@ -146,52 +149,70 @@
     justify-content: center;
   }
 
-  .polaroid .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .polaroid .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   .polaroid .photo.placeholder {
     background: linear-gradient(135deg, #2a2a28 0%, #3a3830 100%);
-    position: relative;
   }
 
-  .polaroid .photo.placeholder::after {
-    content: attr(data-icon);
-    position: absolute;
-    font-size: 2rem;
-    opacity: 0.15;
-  }
-
+  /* Location + date caption */
   .polaroid .caption {
     position: absolute;
-    bottom: 8px;
-    left: 10px;
-    right: 10px;
-    font-family: 'Caveat', cursive;
-    font-size: 0.95rem;
-    color: #333;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    bottom: 0;
+    left: 9px;
+    right: 9px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
   }
 
+  .polaroid .caption .loc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .polaroid .caption .when {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.75rem;
+    color: #888;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+  }
+
+  /* Tape */
   .tape {
     position: absolute;
-    height: 22px;
-    width: 52px;
+    height: 20px;
+    width: 50px;
     z-index: 2;
     border-radius: 1px;
   }
-  .tape-top { top: -10px; left: 50%; transform: translateX(-50%) rotate(-1deg); }
-  .tape-tl  { top: -9px; left: 12px; transform: rotate(-8deg); }
-  .tape-tr  { top: -9px; right: 12px; transform: rotate(6deg); }
+  .tape-top { top: -9px; left: 50%; transform: translateX(-50%) rotate(-1deg); }
+  .tape-tl  { top: -8px; left: 14px; transform: rotate(-7deg); }
+  .tape-tr  { top: -8px; right: 14px; transform: rotate(5deg); }
   .tape-green { background: var(--tape); }
   .tape-blue  { background: var(--tape-blue); }
   .tape-pink  { background: var(--tape-pink); }
 
-  .pol-sm { width: 170px; }
-  .pol-md { width: 210px; }
-  .pol-lg { width: 250px; }
+  /* Width variants — wider to match 5:3 ratio nicely */
+  .pol-sm { width: 220px; }
+  .pol-md { width: 270px; }
+  .pol-lg { width: 320px; }
 
+  /* Rotations */
   .rot-m3 { transform: rotate(-3deg); }
   .rot-m2 { transform: rotate(-2deg); }
   .rot-m1 { transform: rotate(-1.2deg); }
@@ -200,26 +221,43 @@
   .rot-2  { transform: rotate(2.2deg); }
   .rot-3  { transform: rotate(3.5deg); }
 
-  .rot-m3:hover { transform: rotate(-3deg) scale(1.06) translateY(-4px); }
-  .rot-m2:hover { transform: rotate(-2deg) scale(1.06) translateY(-4px); }
-  .rot-m1:hover { transform: rotate(-1.2deg) scale(1.06) translateY(-4px); }
-  .rot-0:hover  { transform: rotate(0deg) scale(1.06) translateY(-4px); }
-  .rot-1:hover  { transform: rotate(1.2deg) scale(1.06) translateY(-4px); }
-  .rot-2:hover  { transform: rotate(2.2deg) scale(1.06) translateY(-4px); }
-  .rot-3:hover  { transform: rotate(3.5deg) scale(1.06) translateY(-4px); }
+  .rot-m3:hover { transform: rotate(-3deg) scale(1.05) translateY(-4px); }
+  .rot-m2:hover { transform: rotate(-2deg) scale(1.05) translateY(-4px); }
+  .rot-m1:hover { transform: rotate(-1.2deg) scale(1.05) translateY(-4px); }
+  .rot-0:hover  { transform: rotate(0deg) scale(1.05) translateY(-4px); }
+  .rot-1:hover  { transform: rotate(1.2deg) scale(1.05) translateY(-4px); }
+  .rot-2:hover  { transform: rotate(2.2deg) scale(1.05) translateY(-4px); }
+  .rot-3:hover  { transform: rotate(3.5deg) scale(1.05) translateY(-4px); }
 
-  .mt-0  { margin-top: 0; }
-  .mt-1  { margin-top: 18px; }
-  .mt-2  { margin-top: 36px; }
-  .ml-1  { margin-left: 12px; }
-  .ml-2  { margin-left: 24px; }
-  .ml-3  { margin-left: 40px; }
+  .mt-0 { margin-top: 0; }
+  .mt-1 { margin-top: 20px; }
+  .mt-2 { margin-top: 40px; }
+  .ml-1 { margin-left: 14px; }
+  .ml-2 { margin-left: 28px; }
+  .ml-3 { margin-left: 44px; }
 
+  .divider {
+    border: none;
+    border-top: 1px dashed #2e2e2c;
+    margin: 0.5rem 0 2.5rem 0.5rem;
+    width: 100px;
+  }
+
+  .upload-hint {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #333;
+    letter-spacing: 0.05em;
+    padding: 2.5rem 0 1rem 0.5rem;
+  }
+
+  /* Lightbox */
   .lightbox {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(10,10,8,0.92);
+    background: rgba(10,10,8,0.93);
     z-index: 100;
     align-items: center;
     justify-content: center;
@@ -230,53 +268,66 @@
 
   .lightbox-inner {
     background: white;
-    padding: 12px 12px 48px;
-    max-width: 90vw;
-    max-height: 90vh;
+    padding: 10px 10px 52px;
     position: relative;
     cursor: default;
+    max-width: 90vw;
   }
 
-  .lightbox-inner img { display: block; max-width: 75vw; max-height: 75vh; object-fit: contain; }
+  .lightbox-inner img {
+    display: block;
+    max-width: 80vw;
+    max-height: 70vh;
+    object-fit: contain;
+  }
+
+  .lightbox-inner .photo.placeholder {
+    width: 600px;
+    max-width: 80vw;
+    height: 360px;
+    max-height: 70vh;
+    background: linear-gradient(135deg, #2a2a28, #3a3830);
+  }
 
   .lightbox-caption {
-    font-family: 'Caveat', cursive;
-    font-size: 1.2rem;
-    color: #333;
-    text-align: center;
     position: absolute;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .lightbox-caption .loc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: 0.04em;
+  }
+
+  .lightbox-caption .when {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #888;
   }
 
   .lightbox-close {
     position: absolute;
-    top: -32px;
+    top: -30px;
     right: 0;
     background: none;
     border: none;
-    color: #aaa;
-    font-size: 12px;
+    color: #888;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
     letter-spacing: 0.1em;
     cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    text-transform: uppercase;
-  }
-
-  .upload-hint {
-    font-size: 11px;
-    color: #333;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 3rem 0 1rem 0.5rem;
-  }
-
-  .divider {
-    border: none;
-    border-top: 1px dashed #2e2e2c;
-    margin: 1rem 0 2.5rem 0.5rem;
-    width: 120px;
   }
 </style>
 </head>
@@ -298,129 +349,72 @@
   <!-- PEOPLE TAB -->
   <div class="tab-content active" id="tab-people">
     <div class="trip-section">
-      <div class="trip-label">portraits</div>
       <div class="polaroid-row">
-        <div class="polaroid pol-md rot-m2 mt-0" onclick="openLightbox(this)">
-          <div class="tape tape-tl tape-green"></div>
-          <div class="photo placeholder" data-icon="👤"></div>
-          <div class="caption">morning light</div>
+
+        <div class="polaroid pol-lg rot-m1 mt-0" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-blue"></div>
+          <div class="photo"><img src="people_1.jpg" alt="Ankara, Turkey"></div>
+          <div class="caption">
+            <span class="loc">Ankara, Turkey</span>
+            <span class="when">May 2026</span>
+          </div>
         </div>
-        <div class="polaroid pol-lg rot-1 mt-1 ml-2" onclick="openLightbox(this)">
-          <div class="tape tape-tr tape-blue"></div>
-          <div class="photo placeholder" data-icon="👤"></div>
-          <div class="caption">old town, Prague</div>
-        </div>
-        <div class="polaroid pol-sm rot-m1 mt-2 ml-1" onclick="openLightbox(this)">
-          <div class="tape tape-top tape-pink"></div>
-          <div class="photo placeholder" data-icon="👤"></div>
-          <div class="caption">untitled</div>
-        </div>
+
       </div>
     </div>
-    <hr class="divider">
-    <div class="trip-section">
-      <div class="trip-label">candid</div>
-      <div class="polaroid-row">
-        <div class="polaroid pol-sm rot-3 mt-1 ml-3" onclick="openLightbox(this)">
-          <div class="tape tape-tl tape-pink"></div>
-          <div class="photo placeholder" data-icon="👤"></div>
-          <div class="caption">market day</div>
-        </div>
-        <div class="polaroid pol-md rot-m3 mt-0 ml-2" onclick="openLightbox(this)">
-          <div class="tape tape-top tape-green"></div>
-          <div class="photo placeholder" data-icon="👤"></div>
-          <div class="caption">waiting</div>
-        </div>
-      </div>
-    </div>
-    <div class="upload-hint">→ replace placeholders with your photos — see readme.txt</div>
+    <div class="upload-hint">more to come</div>
   </div>
 
   <!-- TRAVEL TAB -->
   <div class="tab-content" id="tab-travel">
     <div class="trip-section">
-      <div class="trip-label">on the road</div>
+      <div class="trip-label">Malaysia — December 2025</div>
       <div class="polaroid-row">
-        <div class="polaroid pol-lg rot-m1 mt-0" onclick="openLightbox(this)">
-          <div class="tape tape-tl tape-blue"></div>
-          <div class="photo placeholder" data-icon="✈️"></div>
-          <div class="caption">somewhere new</div>
+
+        <div class="polaroid pol-md rot-m2 mt-0" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-green"></div>
+          <div class="photo"><img src="travel_1.jpg" alt="Penang, Malaysia"></div>
+          <div class="caption">
+            <span class="loc">Penang, Malaysia</span>
+            <span class="when">December 2025</span>
+          </div>
         </div>
-        <div class="polaroid pol-sm rot-2 mt-2 ml-1" onclick="openLightbox(this)">
+
+        <div class="polaroid pol-lg rot-1 mt-2 ml-2" onclick="openLightbox(this)">
           <div class="tape tape-top tape-pink"></div>
-          <div class="photo placeholder" data-icon="✈️"></div>
-          <div class="caption">train window</div>
+          <div class="photo"><img src="travel_2.jpg" alt="Kuala Lumpur, Malaysia"></div>
+          <div class="caption">
+            <span class="loc">Kuala Lumpur, Malaysia</span>
+            <span class="when">December 2025</span>
+          </div>
         </div>
-        <div class="polaroid pol-md rot-m2 mt-1 ml-2" onclick="openLightbox(this)">
-          <div class="tape tape-tr tape-green"></div>
-          <div class="photo placeholder" data-icon="✈️"></div>
-          <div class="caption">golden hour</div>
+
+        <div class="polaroid pol-sm rot-m1 mt-1 ml-1" onclick="openLightbox(this)">
+          <div class="tape tape-tr tape-blue"></div>
+          <div class="photo"><img src="travel_3.jpg" alt="Kuala Lumpur, Malaysia"></div>
+          <div class="caption">
+            <span class="loc">Kuala Lumpur, Malaysia</span>
+            <span class="when">December 2025</span>
+          </div>
         </div>
+
+        <div class="polaroid pol-md rot-2 mt-0 ml-2" onclick="openLightbox(this)">
+          <div class="tape tape-tl tape-green"></div>
+          <div class="photo"><img src="travel_4.jpg" alt="Penang, Malaysia"></div>
+          <div class="caption">
+            <span class="loc">Penang, Malaysia</span>
+            <span class="when">December 2025</span>
+          </div>
+        </div>
+
       </div>
     </div>
-    <hr class="divider">
-    <div class="trip-section">
-      <div class="trip-label">stopovers</div>
-      <div class="polaroid-row">
-        <div class="polaroid pol-md rot-1 mt-0 ml-2" onclick="openLightbox(this)">
-          <div class="tape tape-tl tape-pink"></div>
-          <div class="photo placeholder" data-icon="✈️"></div>
-          <div class="caption">layover views</div>
-        </div>
-        <div class="polaroid pol-sm rot-m3 mt-1 ml-1" onclick="openLightbox(this)">
-          <div class="tape tape-top tape-blue"></div>
-          <div class="photo placeholder" data-icon="✈️"></div>
-          <div class="caption">departure gate</div>
-        </div>
-      </div>
-    </div>
-    <div class="upload-hint">→ replace placeholders with your photos — see readme.txt</div>
+    <div class="upload-hint">more to come</div>
   </div>
 
   <!-- SWITZERLAND TAB -->
   <div class="tab-content" id="tab-switzerland">
-    <div class="trip-section">
-      <div class="trip-label">alps</div>
-      <div class="polaroid-row">
-        <div class="polaroid pol-lg rot-m1 mt-0" onclick="openLightbox(this)">
-          <div class="tape tape-tl tape-blue"></div>
-          <div class="photo placeholder" data-icon="🏔️"></div>
-          <div class="caption">first snow</div>
-        </div>
-        <div class="polaroid pol-md rot-2 mt-2 ml-1" onclick="openLightbox(this)">
-          <div class="tape tape-top tape-green"></div>
-          <div class="photo placeholder" data-icon="🏔️"></div>
-          <div class="caption">Lauterbrunnen</div>
-        </div>
-        <div class="polaroid pol-sm rot-m2 mt-0 ml-2" onclick="openLightbox(this)">
-          <div class="tape tape-tr tape-pink"></div>
-          <div class="photo placeholder" data-icon="🏔️"></div>
-          <div class="caption">cable car up</div>
-        </div>
-      </div>
-    </div>
-    <hr class="divider">
-    <div class="trip-section">
-      <div class="trip-label">cities & villages</div>
-      <div class="polaroid-row">
-        <div class="polaroid pol-sm rot-3 mt-1 ml-3" onclick="openLightbox(this)">
-          <div class="tape tape-tl tape-green"></div>
-          <div class="photo placeholder" data-icon="🇨🇭"></div>
-          <div class="caption">Zürich at dusk</div>
-        </div>
-        <div class="polaroid pol-lg rot-m2 mt-0 ml-2" onclick="openLightbox(this)">
-          <div class="tape tape-top tape-blue"></div>
-          <div class="photo placeholder" data-icon="🇨🇭"></div>
-          <div class="caption">lake reflect.</div>
-        </div>
-        <div class="polaroid pol-md rot-1 mt-2 ml-1" onclick="openLightbox(this)">
-          <div class="tape tape-tr tape-pink"></div>
-          <div class="photo placeholder" data-icon="🇨🇭"></div>
-          <div class="caption">old town</div>
-        </div>
-      </div>
-    </div>
-    <div class="upload-hint">→ replace placeholders with your photos — see readme.txt</div>
+    <div class="upload-hint">coming soon</div>
   </div>
 
 </div>
@@ -443,16 +437,19 @@ function showTab(name, btn) {
 }
 
 function openLightbox(card) {
-  const photo = card.querySelector('.photo');
-  const caption = card.querySelector('.caption').textContent;
+  const img = card.querySelector('.photo img');
+  const loc  = card.querySelector('.caption .loc').textContent;
+  const when = card.querySelector('.caption .when').textContent;
   const content = document.getElementById('lightbox-content');
-  const img = photo.querySelector('img');
+  const capEl   = document.getElementById('lightbox-caption');
+
   if (img) {
-    content.innerHTML = '<img src="' + img.src + '" alt="' + caption + '">';
+    content.innerHTML = '<img src="' + img.src + '" alt="' + loc + '">';
   } else {
-    content.innerHTML = '<div style="width:480px;max-width:75vw;height:360px;max-height:60vh;background:linear-gradient(135deg,#2a2a28,#3a3830);display:flex;align-items:center;justify-content:center;font-size:5rem;opacity:0.3;">' + (photo.getAttribute('data-icon') || '') + '</div>';
+    content.innerHTML = '<div class="photo placeholder" style="width:600px;max-width:80vw;height:360px;max-height:70vh;"></div>';
   }
-  document.getElementById('lightbox-caption').textContent = caption;
+
+  capEl.innerHTML = '<span class="loc">' + loc + '</span><span class="when">' + when + '</span>';
   document.getElementById('lightbox').classList.add('open');
 }
 
