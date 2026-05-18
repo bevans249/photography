@@ -53,13 +53,11 @@
 
   /* ── Nav ── */
   nav {
-    padding: 1.6rem 3.5rem 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0;
     border-bottom: 1px solid #2a2a28;
-    margin: 0 3.5rem;
-    margin-top: 1.6rem;
+    margin: 1.6rem 3.5rem 0;
     padding: 0;
   }
 
@@ -114,6 +112,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.8rem;
+    align-items: start;
   }
 
   /* ── Photo card ── */
@@ -138,7 +137,10 @@
   /* Horizontal: 5:3 */
   .photo-card.h .frame { aspect-ratio: 5 / 3; }
 
-  /* Vertical: 3:4 */
+  /* Vertical: 3:4 — constrained to 60% width so it doesn't tower over horizontal cards */
+  .photo-card.v {
+    max-width: 60%;
+  }
   .photo-card.v .frame { aspect-ratio: 3 / 4; }
 
   .photo-card .frame img {
@@ -242,19 +244,9 @@
 
   .lightbox-close:hover { color: var(--paper); }
 
-  /* ── Coming soon ── */
-  .coming-soon {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 1rem;
-    color: #333;
-    letter-spacing: 0.06em;
-    padding: 1rem 0;
-  }
-
   /* ── Responsive ── */
   @media (max-width: 900px) {
-    header, nav, .board { padding-left: 1.5rem; padding-right: 1.5rem; }
+    header, .board { padding-left: 1.5rem; padding-right: 1.5rem; }
     nav { margin-left: 1.5rem; margin-right: 1.5rem; }
     .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
   }
@@ -296,8 +288,8 @@
         <div class="frame"><img src="albania_3a.jpg" alt="Tirana, Albania"></div>
         <div class="meta"><span class="loc">Tirana, Albania</span><span class="when">May 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('albania_4.jpg','Tirana, Albania','May 2026')">
-        <div class="frame"><img src="albania_4.jpg" alt="Tirana, Albania"></div>
+      <div class="photo-card h" onclick="openLightbox('albania_4.JPG','Tirana, Albania','May 2026')">
+        <div class="frame"><img src="albania_4.JPG" alt="Tirana, Albania"></div>
         <div class="meta"><span class="loc">Tirana, Albania</span><span class="when">May 2026</span></div>
       </div>
     </div>
@@ -310,28 +302,28 @@
         <div class="frame"><img src="malaysia_1a.jpg" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_2.jpg','Penang, Malaysia','December 2025')">
-        <div class="frame"><img src="malaysia_2.jpg" alt="Penang, Malaysia"></div>
+      <div class="photo-card h" onclick="openLightbox('malaysia_2.JPG','Penang, Malaysia','December 2025')">
+        <div class="frame"><img src="malaysia_2.JPG" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card v" onclick="openLightbox('malaysia_3.jpg','Penang, Malaysia','December 2025')">
-        <div class="frame"><img src="malaysia_3.jpg" alt="Penang, Malaysia"></div>
+      <div class="photo-card v" onclick="openLightbox('malaysia_3.JPG','Penang, Malaysia','December 2025')">
+        <div class="frame"><img src="malaysia_3.JPG" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_4.jpg','Penang, Malaysia','December 2025')">
-        <div class="frame"><img src="malaysia_4.jpg" alt="Penang, Malaysia"></div>
+      <div class="photo-card h" onclick="openLightbox('malaysia_4.JPG','Penang, Malaysia','December 2025')">
+        <div class="frame"><img src="malaysia_4.JPG" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_5.jpg','Kuala Lumpur, Malaysia','December 2025')">
-        <div class="frame"><img src="malaysia_5.jpg" alt="Kuala Lumpur, Malaysia"></div>
+      <div class="photo-card h" onclick="openLightbox('malaysia_5.JPG','Kuala Lumpur, Malaysia','December 2025')">
+        <div class="frame"><img src="malaysia_5.JPG" alt="Kuala Lumpur, Malaysia"></div>
         <div class="meta"><span class="loc">Kuala Lumpur, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_6.jpg','Kuala Lumpur, Malaysia','December 2025')">
-        <div class="frame"><img src="malaysia_6.jpg" alt="Kuala Lumpur, Malaysia"></div>
+      <div class="photo-card h" onclick="openLightbox('malaysia_6.JPG','Kuala Lumpur, Malaysia','December 2025')">
+        <div class="frame"><img src="malaysia_6.JPG" alt="Kuala Lumpur, Malaysia"></div>
         <div class="meta"><span class="loc">Kuala Lumpur, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_7.jpg','Kuala Lumpur, Malaysia','December 2025')">
-        <div class="frame"><img src="malaysia_7.jpg" alt="Kuala Lumpur, Malaysia"></div>
+      <div class="photo-card h" onclick="openLightbox('malaysia_7.JPG','Kuala Lumpur, Malaysia','December 2025')">
+        <div class="frame"><img src="malaysia_7.JPG" alt="Kuala Lumpur, Malaysia"></div>
         <div class="meta"><span class="loc">Kuala Lumpur, Malaysia</span><span class="when">December 2025</span></div>
       </div>
     </div>
@@ -358,12 +350,12 @@
   <!-- SWITZERLAND -->
   <div class="tab-content" id="tab-switzerland">
     <div class="photo-grid">
-      <div class="photo-card h" onclick="openLightbox('switzerland_1.jpg','Switzerland','April 2026')">
-        <div class="frame"><img src="switzerland_1.jpg" alt="Switzerland"></div>
+      <div class="photo-card h" onclick="openLightbox('switzerland_1.JPG','Switzerland','April 2026')">
+        <div class="frame"><img src="switzerland_1.JPG" alt="Switzerland"></div>
         <div class="meta"><span class="loc">Switzerland</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('switzerland_2.jpg','Switzerland','April 2026')">
-        <div class="frame"><img src="switzerland_2.jpg" alt="Switzerland"></div>
+      <div class="photo-card h" onclick="openLightbox('switzerland_2.JPG','Switzerland','April 2026')">
+        <div class="frame"><img src="switzerland_2.JPG" alt="Switzerland"></div>
         <div class="meta"><span class="loc">Switzerland</span><span class="when">April 2026</span></div>
       </div>
       <div class="photo-card h" onclick="openLightbox('switzerland_3a.jpg','Switzerland','April 2026')">
@@ -380,28 +372,28 @@
   <!-- PEOPLE -->
   <div class="tab-content" id="tab-people">
     <div class="photo-grid">
-      <div class="photo-card h" onclick="openLightbox('people_1.jpg','Headless girlfriend','November 2025')">
-        <div class="frame"><img src="people_1.jpg" alt="Headless girlfriend"></div>
+      <div class="photo-card h" onclick="openLightbox('people_1.JPG','Headless girlfriend','November 2025')">
+        <div class="frame"><img src="people_1.JPG" alt="Headless girlfriend"></div>
         <div class="meta"><span class="loc">Headless girlfriend</span><span class="when">November 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_2.jpg','Boat enthusiast','April 2026')">
-        <div class="frame"><img src="people_2.jpg" alt="Boat enthusiast"></div>
+      <div class="photo-card h" onclick="openLightbox('people_2.JPG','Boat enthusiast','April 2026')">
+        <div class="frame"><img src="people_2.JPG" alt="Boat enthusiast"></div>
         <div class="meta"><span class="loc">Boat enthusiast</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_3.jpg','Jetty hangout','November 2025')">
-        <div class="frame"><img src="people_3.jpg" alt="Jetty hangout"></div>
+      <div class="photo-card h" onclick="openLightbox('people_3.JPG','Jetty hangout','November 2025')">
+        <div class="frame"><img src="people_3.JPG" alt="Jetty hangout"></div>
         <div class="meta"><span class="loc">Jetty hangout</span><span class="when">November 2025</span></div>
       </div>
       <div class="photo-card h" onclick="openLightbox('people_4.jpg','Sleeping','November 2025')">
         <div class="frame"><img src="people_4.jpg" alt="Sleeping"></div>
         <div class="meta"><span class="loc">Sleeping</span><span class="when">November 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_5.jpg','Tour de Romandie','April 2026')">
-        <div class="frame"><img src="people_5.jpg" alt="Tour de Romandie"></div>
+      <div class="photo-card h" onclick="openLightbox('people_5.JPG','Tour de Romandie','April 2026')">
+        <div class="frame"><img src="people_5.JPG" alt="Tour de Romandie"></div>
         <div class="meta"><span class="loc">Tour de Romandie</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_6.jpg','Who did it?','May 2026')">
-        <div class="frame"><img src="people_6.jpg" alt="Who did it?"></div>
+      <div class="photo-card h" onclick="openLightbox('people_6.JPG','Who did it?','May 2026')">
+        <div class="frame"><img src="people_6.JPG" alt="Who did it?"></div>
         <div class="meta"><span class="loc">Who did it?</span><span class="when">May 2026</span></div>
       </div>
     </div>
