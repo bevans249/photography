@@ -13,9 +13,6 @@
     --ink: #1a1a18;
     --muted: #555;
     --bg: #1c1c1a;
-    --frame-bg: #fff;
-    --caption-text: #444;
-    --caption-sub: #999;
   }
 
   body {
@@ -95,9 +92,7 @@
   nav button:hover:not(.active) { color: #999; }
 
   /* ── Board ── */
-  .board {
-    padding: 2.8rem 3.5rem 5rem;
-  }
+  .board { padding: 2.8rem 3.5rem 5rem; }
 
   .tab-content { display: none; }
   .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
@@ -134,13 +129,9 @@
     line-height: 0;
   }
 
-  /* Horizontal: 5:3 */
   .photo-card.h .frame { aspect-ratio: 5 / 3; }
 
-  /* Vertical: 3:4 — constrained to 60% width so it doesn't tower over horizontal cards */
-  .photo-card.v {
-    max-width: 60%;
-  }
+  .photo-card.v { max-width: 60%; }
   .photo-card.v .frame { aspect-ratio: 3 / 4; }
 
   .photo-card .frame img {
@@ -153,11 +144,7 @@
 
   .photo-card:hover .frame img { transform: scale(1.02); }
 
-  .photo-card .meta {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
+  .photo-card .meta { display: flex; flex-direction: column; gap: 1px; }
 
   .photo-card .meta .loc {
     font-family: 'Cormorant Garamond', serif;
@@ -180,54 +167,18 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(8,8,7,0.95);
+    background: rgba(8,8,7,0.96);
     z-index: 100;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 1rem;
-    cursor: pointer;
   }
 
-  .lightbox.open {
-    display: flex;
-    animation: lbIn 0.2s ease;
-  }
-
+  .lightbox.open { display: flex; animation: lbIn 0.2s ease; }
   @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
 
-  .lightbox img {
-    max-width: 88vw;
-    max-height: 80vh;
-    object-fit: contain;
-    cursor: default;
-    display: block;
-  }
-
-  .lightbox-meta {
-    text-align: center;
-    cursor: default;
-  }
-
-  .lightbox-meta .loc {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--paper);
-    letter-spacing: 0.05em;
-    display: block;
-  }
-
-  .lightbox-meta .when {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 0.85rem;
-    color: #777;
-    letter-spacing: 0.04em;
-    display: block;
-    margin-top: 2px;
-  }
-
+  /* close button */
   .lightbox-close {
     position: fixed;
     top: 1.4rem;
@@ -240,9 +191,84 @@
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: color 0.2s;
+    z-index: 101;
+  }
+  .lightbox-close:hover { color: var(--paper); }
+
+  /* main image area */
+  .lightbox-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    width: 100%;
+    padding: 0 1rem;
   }
 
-  .lightbox-close:hover { color: var(--paper); }
+  .lightbox-stage img {
+    max-width: 80vw;
+    max-height: 78vh;
+    object-fit: contain;
+    display: block;
+    cursor: default;
+    transition: opacity 0.15s ease;
+  }
+
+  .lightbox-stage img.fading { opacity: 0; }
+
+  /* arrow buttons */
+  .lb-arrow {
+    background: none;
+    border: none;
+    color: #444;
+    font-size: 1.6rem;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+    transition: color 0.2s;
+    flex-shrink: 0;
+    line-height: 1;
+    user-select: none;
+  }
+  .lb-arrow:hover { color: var(--paper); }
+  .lb-arrow:disabled { color: #2a2a2a; cursor: default; }
+
+  /* counter + caption */
+  .lightbox-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .lightbox-meta .loc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--paper);
+    letter-spacing: 0.05em;
+    display: block;
+    text-align: center;
+  }
+
+  .lightbox-meta .when {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #777;
+    letter-spacing: 0.04em;
+    display: block;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .lightbox-counter {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.75rem;
+    color: #444;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
 
   /* ── Responsive ── */
   @media (max-width: 900px) {
@@ -253,6 +279,7 @@
 
   @media (max-width: 560px) {
     .photo-grid { grid-template-columns: 1fr; }
+    .lightbox-stage img { max-width: 90vw; max-height: 65vh; }
   }
 </style>
 </head>
@@ -276,19 +303,19 @@
   <!-- ALBANIA -->
   <div class="tab-content active" id="tab-albania">
     <div class="photo-grid">
-      <div class="photo-card h" onclick="openLightbox('albania_1.jpg','Tirana, Albania','May 2026')">
+      <div class="photo-card h" onclick="openLightbox(0, 'albania')">
         <div class="frame"><img src="albania_1.jpg" alt="Tirana, Albania"></div>
         <div class="meta"><span class="loc">Tirana, Albania</span><span class="when">May 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('albania_2.jpg','Tirana, Albania','May 2026')">
+      <div class="photo-card h" onclick="openLightbox(1, 'albania')">
         <div class="frame"><img src="albania_2.jpg" alt="Tirana, Albania"></div>
         <div class="meta"><span class="loc">Tirana, Albania</span><span class="when">May 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('albania_3a.jpg','Tirana, Albania','May 2026')">
+      <div class="photo-card h" onclick="openLightbox(2, 'albania')">
         <div class="frame"><img src="albania_3a.jpg" alt="Tirana, Albania"></div>
         <div class="meta"><span class="loc">Tirana, Albania</span><span class="when">May 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('albania_4.JPG','Tirana, Albania','May 2026')">
+      <div class="photo-card v" onclick="openLightbox(3, 'albania')">
         <div class="frame"><img src="albania_4.JPG" alt="Tirana, Albania"></div>
         <div class="meta"><span class="loc">Tirana, Albania</span><span class="when">May 2026</span></div>
       </div>
@@ -298,31 +325,31 @@
   <!-- MALAYSIA -->
   <div class="tab-content" id="tab-malaysia">
     <div class="photo-grid">
-      <div class="photo-card h" onclick="openLightbox('malaysia_1a.jpg','Penang, Malaysia','December 2025')">
+      <div class="photo-card h" onclick="openLightbox(0, 'malaysia')">
         <div class="frame"><img src="malaysia_1a.jpg" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_2.JPG','Penang, Malaysia','December 2025')">
+      <div class="photo-card h" onclick="openLightbox(1, 'malaysia')">
         <div class="frame"><img src="malaysia_2.JPG" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card v" onclick="openLightbox('malaysia_3.JPG','Penang, Malaysia','December 2025')">
+      <div class="photo-card v" onclick="openLightbox(2, 'malaysia')">
         <div class="frame"><img src="malaysia_3.JPG" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_4.JPG','Penang, Malaysia','December 2025')">
+      <div class="photo-card h" onclick="openLightbox(3, 'malaysia')">
         <div class="frame"><img src="malaysia_4.JPG" alt="Penang, Malaysia"></div>
         <div class="meta"><span class="loc">Penang, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_5.JPG','Kuala Lumpur, Malaysia','December 2025')">
+      <div class="photo-card h" onclick="openLightbox(4, 'malaysia')">
         <div class="frame"><img src="malaysia_5.JPG" alt="Kuala Lumpur, Malaysia"></div>
         <div class="meta"><span class="loc">Kuala Lumpur, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_6.JPG','Kuala Lumpur, Malaysia','December 2025')">
+      <div class="photo-card h" onclick="openLightbox(5, 'malaysia')">
         <div class="frame"><img src="malaysia_6.JPG" alt="Kuala Lumpur, Malaysia"></div>
         <div class="meta"><span class="loc">Kuala Lumpur, Malaysia</span><span class="when">December 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('malaysia_7.JPG','Kuala Lumpur, Malaysia','December 2025')">
+      <div class="photo-card h" onclick="openLightbox(6, 'malaysia')">
         <div class="frame"><img src="malaysia_7.JPG" alt="Kuala Lumpur, Malaysia"></div>
         <div class="meta"><span class="loc">Kuala Lumpur, Malaysia</span><span class="when">December 2025</span></div>
       </div>
@@ -332,15 +359,15 @@
   <!-- ITALY -->
   <div class="tab-content" id="tab-italy">
     <div class="photo-grid">
-      <div class="photo-card v" onclick="openLightbox('italy_1.jpg','Italy','April 2026')">
+      <div class="photo-card v" onclick="openLightbox(0, 'italy')">
         <div class="frame"><img src="italy_1.jpg" alt="Italy"></div>
         <div class="meta"><span class="loc">Italy</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card v" onclick="openLightbox('italy_2.jpg','Italy','April 2026')">
+      <div class="photo-card v" onclick="openLightbox(1, 'italy')">
         <div class="frame"><img src="italy_2.jpg" alt="Italy"></div>
         <div class="meta"><span class="loc">Italy</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card v" onclick="openLightbox('italy_3.jpg','Italy','April 2026')">
+      <div class="photo-card v" onclick="openLightbox(2, 'italy')">
         <div class="frame"><img src="italy_3.jpg" alt="Italy"></div>
         <div class="meta"><span class="loc">Italy</span><span class="when">April 2026</span></div>
       </div>
@@ -350,19 +377,19 @@
   <!-- SWITZERLAND -->
   <div class="tab-content" id="tab-switzerland">
     <div class="photo-grid">
-      <div class="photo-card h" onclick="openLightbox('switzerland_1.JPG','Switzerland','April 2026')">
+      <div class="photo-card h" onclick="openLightbox(0, 'switzerland')">
         <div class="frame"><img src="switzerland_1.JPG" alt="Switzerland"></div>
         <div class="meta"><span class="loc">Switzerland</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('switzerland_2.JPG','Switzerland','April 2026')">
+      <div class="photo-card h" onclick="openLightbox(1, 'switzerland')">
         <div class="frame"><img src="switzerland_2.JPG" alt="Switzerland"></div>
         <div class="meta"><span class="loc">Switzerland</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('switzerland_3a.jpg','Switzerland','April 2026')">
+      <div class="photo-card h" onclick="openLightbox(2, 'switzerland')">
         <div class="frame"><img src="switzerland_3a.jpg" alt="Switzerland"></div>
         <div class="meta"><span class="loc">Switzerland</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('switzerland_4a.jpg','Switzerland','April 2026')">
+      <div class="photo-card h" onclick="openLightbox(3, 'switzerland')">
         <div class="frame"><img src="switzerland_4a.jpg" alt="Switzerland"></div>
         <div class="meta"><span class="loc">Switzerland</span><span class="when">April 2026</span></div>
       </div>
@@ -372,27 +399,27 @@
   <!-- PEOPLE -->
   <div class="tab-content" id="tab-people">
     <div class="photo-grid">
-      <div class="photo-card h" onclick="openLightbox('people_1.JPG','Headless girlfriend','November 2025')">
+      <div class="photo-card h" onclick="openLightbox(0, 'people')">
         <div class="frame"><img src="people_1.JPG" alt="Headless girlfriend"></div>
         <div class="meta"><span class="loc">Headless girlfriend</span><span class="when">November 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_2.JPG','Boat enthusiast','April 2026')">
+      <div class="photo-card h" onclick="openLightbox(1, 'people')">
         <div class="frame"><img src="people_2.JPG" alt="Boat enthusiast"></div>
         <div class="meta"><span class="loc">Boat enthusiast</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_3.JPG','Jetty hangout','November 2025')">
+      <div class="photo-card h" onclick="openLightbox(2, 'people')">
         <div class="frame"><img src="people_3.JPG" alt="Jetty hangout"></div>
         <div class="meta"><span class="loc">Jetty hangout</span><span class="when">November 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_4.jpg','Sleeping','November 2025')">
+      <div class="photo-card h" onclick="openLightbox(3, 'people')">
         <div class="frame"><img src="people_4.jpg" alt="Sleeping"></div>
         <div class="meta"><span class="loc">Sleeping</span><span class="when">November 2025</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_5.JPG','Tour de Romandie','April 2026')">
+      <div class="photo-card h" onclick="openLightbox(4, 'people')">
         <div class="frame"><img src="people_5.JPG" alt="Tour de Romandie"></div>
         <div class="meta"><span class="loc">Tour de Romandie</span><span class="when">April 2026</span></div>
       </div>
-      <div class="photo-card h" onclick="openLightbox('people_6.JPG','Who did it?','May 2026')">
+      <div class="photo-card h" onclick="openLightbox(5, 'people')">
         <div class="frame"><img src="people_6.JPG" alt="Who did it?"></div>
         <div class="meta"><span class="loc">Who did it?</span><span class="when">May 2026</span></div>
       </div>
@@ -402,38 +429,127 @@
 </div>
 
 <!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+<div class="lightbox" id="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">close ×</button>
-  <img id="lightbox-img" src="" alt="">
-  <div class="lightbox-meta" id="lightbox-meta"></div>
+  <div class="lightbox-stage">
+    <button class="lb-arrow" id="lb-prev" onclick="navigate(-1)">&#8592;</button>
+    <img id="lightbox-img" src="" alt="">
+    <button class="lb-arrow" id="lb-next" onclick="navigate(1)">&#8594;</button>
+  </div>
+  <div class="lightbox-footer">
+    <div class="lightbox-meta" id="lightbox-meta"></div>
+    <div class="lightbox-counter" id="lightbox-counter"></div>
+  </div>
 </div>
 
 <script>
+// Photo data per tab
+const photos = {
+  albania: [
+    { src: 'albania_1.jpg',    loc: 'Tirana, Albania',       when: 'May 2026' },
+    { src: 'albania_2.jpg',    loc: 'Tirana, Albania',       when: 'May 2026' },
+    { src: 'albania_3a.jpg',   loc: 'Tirana, Albania',       when: 'May 2026' },
+    { src: 'albania_4.JPG',    loc: 'Tirana, Albania',       when: 'May 2026' },
+  ],
+  malaysia: [
+    { src: 'malaysia_1a.jpg',  loc: 'Penang, Malaysia',      when: 'December 2025' },
+    { src: 'malaysia_2.JPG',   loc: 'Penang, Malaysia',      when: 'December 2025' },
+    { src: 'malaysia_3.JPG',   loc: 'Penang, Malaysia',      when: 'December 2025' },
+    { src: 'malaysia_4.JPG',   loc: 'Penang, Malaysia',      when: 'December 2025' },
+    { src: 'malaysia_5.JPG',   loc: 'Kuala Lumpur, Malaysia',when: 'December 2025' },
+    { src: 'malaysia_6.JPG',   loc: 'Kuala Lumpur, Malaysia',when: 'December 2025' },
+    { src: 'malaysia_7.JPG',   loc: 'Kuala Lumpur, Malaysia',when: 'December 2025' },
+  ],
+  italy: [
+    { src: 'italy_1.jpg',      loc: 'Italy',                 when: 'April 2026' },
+    { src: 'italy_2.jpg',      loc: 'Italy',                 when: 'April 2026' },
+    { src: 'italy_3.jpg',      loc: 'Italy',                 when: 'April 2026' },
+  ],
+  switzerland: [
+    { src: 'switzerland_1.JPG',loc: 'Switzerland',           when: 'April 2026' },
+    { src: 'switzerland_2.JPG',loc: 'Switzerland',           when: 'April 2026' },
+    { src: 'switzerland_3a.jpg',loc:'Switzerland',           when: 'April 2026' },
+    { src: 'switzerland_4a.jpg',loc:'Switzerland',           when: 'April 2026' },
+  ],
+  people: [
+    { src: 'people_1.JPG',     loc: 'Headless girlfriend',   when: 'November 2025' },
+    { src: 'people_2.JPG',     loc: 'Boat enthusiast',       when: 'April 2026' },
+    { src: 'people_3.JPG',     loc: 'Jetty hangout',         when: 'November 2025' },
+    { src: 'people_4.jpg',     loc: 'Sleeping',              when: 'November 2025' },
+    { src: 'people_5.JPG',     loc: 'Tour de Romandie',      when: 'April 2026' },
+    { src: 'people_6.JPG',     loc: 'Who did it?',           when: 'May 2026' },
+  ],
+};
+
+let currentTab = 'albania';
+let currentIndex = 0;
+
 function showTab(name, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   btn.classList.add('active');
+  currentTab = name;
 }
 
-function openLightbox(src, loc, when) {
-  const img = document.getElementById('lightbox-img');
-  img.src = src;
-  img.alt = loc;
-  document.getElementById('lightbox-meta').innerHTML =
-    '<span class="loc">' + loc + '</span><span class="when">' + when + '</span>';
+function openLightbox(index, tab) {
+  currentTab = tab;
+  currentIndex = index;
+  renderLightbox();
   document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-function closeLightbox(e) {
-  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
-    document.getElementById('lightbox').classList.remove('open');
-    document.getElementById('lightbox-img').src = '';
+function renderLightbox(fade) {
+  const set = photos[currentTab];
+  const photo = set[currentIndex];
+  const img = document.getElementById('lightbox-img');
+
+  if (fade) {
+    img.classList.add('fading');
+    setTimeout(() => {
+      img.src = photo.src;
+      img.alt = photo.loc;
+      img.classList.remove('fading');
+    }, 150);
+  } else {
+    img.src = photo.src;
+    img.alt = photo.loc;
   }
+
+  document.getElementById('lightbox-meta').innerHTML =
+    '<span class="loc">' + photo.loc + '</span><span class="when">' + photo.when + '</span>';
+  document.getElementById('lightbox-counter').textContent =
+    (currentIndex + 1) + ' / ' + set.length;
+
+  document.getElementById('lb-prev').disabled = currentIndex === 0;
+  document.getElementById('lb-next').disabled = currentIndex === set.length - 1;
 }
+
+function navigate(dir) {
+  const set = photos[currentTab];
+  const next = currentIndex + dir;
+  if (next < 0 || next >= set.length) return;
+  currentIndex = next;
+  renderLightbox(true);
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') });
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   navigate(-1);
+  if (e.key === 'ArrowRight')  navigate(1);
 });
 </script>
 
